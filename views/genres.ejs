@@ -9,12 +9,8 @@
   <body>
     <div class="header"><h1>Game Inventory</h1></div>
     <div class="container">
-      <% genres.forEach(element => { %>
-      <h2>
-        <a href="/genres/<%= element.genre_name.toLowerCase() %>"
-          ><%= element.genre_name %></a
-        >
-      </h2>
+      <% games.forEach(element => { %>
+      <h2><%= element.game_name %></h2>
       <% }) %>
     </div>
   </body>

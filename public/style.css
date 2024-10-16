@@ -11,6 +11,11 @@ body {
   color: #eeeeee;
 }
 
+a {
+  text-decoration: none;
+  color: inherit;
+}
+
 .header {
   background-color: #5c5c5c;
   padding: 1rem 0;
