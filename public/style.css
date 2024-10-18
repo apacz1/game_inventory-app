@@ -22,11 +22,51 @@ a {
   text-align: center;
 }
 
-.container {
-  margin: auto;
+.games-container > div,
+.genres-container {
+  margin: 2rem auto;
   width: 70%;
+  display: grid;
 }
 
-.container > h2 {
+.genres-container {
+  grid-template-columns: auto auto;
+  gap: 2%;
+  justify-content: center;
+}
+
+.genre-container > h2 {
   text-align: center;
+  vertical-align: center;
+  line-height: 15rem;
+  text-shadow: -1.5px -1.5px 0 #000, 1.5px -1.5px 0 #000, -1.5px 1.5px 0 #000,
+    1.5px 1.5px 0 #000;
+}
+
+.genre-container {
+  width: 30rem;
+  height: 15rem;
+  background-size: cover;
+  border-radius: 1%;
+}
+
+.genres-container > a:nth-last-child(1):nth-child(odd) {
+  grid-column: span 2;
+  justify-self: center;
+}
+
+.games-container {
+  margin: 2rem auto;
+}
+
+.games-container > div {
+  grid-template-columns: 40% 20% 20% 20%;
+  text-align: center;
+  margin: auto;
+  padding: 1rem 0;
+  border-bottom: 0.2rem solid #5c5c5c;
+}
+
+.games-header {
+  background-color: #5c5c5c;
 }

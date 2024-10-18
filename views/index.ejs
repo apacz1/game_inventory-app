@@ -8,14 +8,22 @@
   </head>
   <body>
     <div class="header"><h1>Game Inventory</h1></div>
-    <div class="container">
+    <div class="genres-container">
       <% genres.forEach(element => { %>
-      <h2>
-        <a href="/genres/<%= element.genre_name.toLowerCase() %>"
-          ><%= element.genre_name %></a
+      <a href="/genres/<%= element.genre_name.toLowerCase() %>">
+        <div
+          class="genre-container"
+          style="background-image: url('<%= element.genre_name %>.jpg')"
         >
-      </h2>
+          <h2><%= element.genre_name %></h2>
+        </div></a
+      >
       <% }) %>
+      <a href="/genres/all"
+        ><div class="genre-container" style="background-color: #5c5c5c">
+          <h2>All games</h2>
+        </div></a
+      >
     </div>
   </body>
 </html>
