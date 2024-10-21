@@ -22,10 +22,9 @@ a {
   text-align: center;
 }
 
-.games-container > div,
+.games-header,
+.game-container,
 .genres-container {
-  margin: 2rem auto;
-  width: 70%;
   display: grid;
 }
 
@@ -55,18 +54,39 @@ a {
   justify-self: center;
 }
 
-.games-container {
+.games-container,
+.genres-container {
   margin: 2rem auto;
-}
-
-.games-container > div {
-  grid-template-columns: 40% 20% 20% 20%;
-  text-align: center;
-  margin: auto;
-  padding: 1rem 0;
-  border-bottom: 0.2rem solid #5c5c5c;
+  width: 70%;
 }
 
 .games-header {
+  grid-template-columns: 40% 20% 20% 20%;
   background-color: #5c5c5c;
+}
+
+.backbtn,
+.btns > a {
+  display: inline-block;
+  width: 2rem;
+  height: 2rem;
+}
+
+.btns {
+  gap: 10px;
+}
+
+.game-container {
+  grid-template-columns: 40% 20% 20% 20% auto;
+  overflow-y: visible;
+}
+
+h3,
+.btns,
+.games-header > h2 {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  border-bottom: 0.2rem solid #5c5c5c;
+  padding: 1rem 0;
 }

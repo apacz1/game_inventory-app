@@ -9,6 +9,7 @@
   <body>
     <div class="header"><h1>Game Inventory</h1></div>
     <div class="games-container">
+      <a href="/" class="backbtn"><img src="/arrow-left.svg" alt="Back" /></a>
       <div class="games-header">
         <h2>Title</h2>
         <h2>Developer</h2>
@@ -21,6 +22,10 @@
         <h3><%= element.developer_name %></h3>
         <h3><%= element.genre_name %></h3>
         <h3><%= element.release_date.toLocaleDateString() %></h3>
+        <div class="btns">
+          <a href="/"><img src="/delete.svg" alt="Delete" /></a>
+          <a href="/"><img src="/pencil.svg" alt="Edit" /></a>
+        </div>
       </div>
       <% }) %>
     </div>
