@@ -65,9 +65,15 @@ a {
   background-color: #5c5c5c;
 }
 
-.backbtn,
-.btns > a {
-  display: inline-block;
+.topbtns {
+  display: flex;
+  justify-content: space-between;
+  padding-bottom: 1rem;
+  align-items: center;
+}
+
+.topbtns a,
+.btns a {
   width: 2rem;
   height: 2rem;
 }
@@ -89,4 +95,14 @@ h3,
   align-items: center;
   border-bottom: 0.2rem solid #5c5c5c;
   padding: 1rem 0;
+}
+
+.addbtn {
+  display: flex;
+  flex: 1;
+  border: 0.2rem solid #5c5c5c;
+  cursor: pointer;
+  max-width: 6rem;
+  justify-content: center;
+  align-items: center;
 }

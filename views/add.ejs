@@ -1,0 +1,27 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <link rel="stylesheet" href="/style.css" />
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Game Inventory</title>
+  </head>
+  <body>
+    <div class="header"><h1>Game Inventory</h1></div>
+    <div class="form-container">
+      <form action="">
+        <label for="title">Game title: </label>
+        <input type="text" id="title" name="title" />
+        <label for="developer">Developer: </label>
+        <input type="text" id="developer" name="developer" />
+        <label for="date">Release date: </label>
+        <input type="date" name="date" id="date" />
+        <% if(params.genre_name === "all") { genres.forEach(genre => { %>
+        <label for="<%= genre.genre_name %>"><%= genre.genre_name %></label>
+        <input type="radio" name="genre" id="<%= genre.genre_name %>" />
+        <% })} %>
+        <button type="submit">Add</button>
+      </form>
+    </div>
+  </body>
+</html>
