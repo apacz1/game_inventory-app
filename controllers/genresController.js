@@ -1,4 +1,10 @@
 const db = require("../db/queries");
+const { validationResult, check } = require("express-validator");
+
+const validateGame = [
+  check("title").notEmpty().withMessage("Game title can not be empty."),
+  check("developer").notEmpty().withMessage("Developer can not be empty."),
+];
 
 async function getGames(req, res) {
   console.log(req.params);
@@ -20,4 +26,18 @@ async function getGenres(req, res) {
   res.render("add", { genres: genres, params: req.params });
 }
 
-module.exports = { getGames, getGenres };
+const addGame = [
+  validateGame,
+  (req, res) => {
+    const errors = validationResult(req);
+    if (!errors.isEmpty()) {
+      return res.status(400).render("add", {
+        errors: errors.array(),
+        params: req.params,
+      });
+    }
+    res.redirect(`/genres/${req.params.genre_name}`);
+  },
+];
+
+module.exports = { getGames, getGenres, addGame };
