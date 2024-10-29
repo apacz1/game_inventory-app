@@ -74,9 +74,15 @@ a {
 }
 
 .topbtns a,
-.btns a {
+.btns * {
   width: 2rem;
   height: 2rem;
+}
+
+.btns button {
+  background-color: #999999;
+  border: none;
+  cursor: pointer;
 }
 
 .btns {

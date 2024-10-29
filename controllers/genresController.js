@@ -7,9 +7,7 @@ const validateGame = [
 ];
 
 async function getGames(req, res) {
-  console.log(req.params);
   const genreName = req.params.genre_name.toLowerCase();
-  console.log(genreName);
   if (genreName !== "all") {
     const genreResult = await db.getGenreByName(genreName);
     const genreId = genreResult[0].genre_id;
@@ -28,7 +26,7 @@ async function getGenres(req, res) {
 
 const addGame = [
   validateGame,
-  (req, res) => {
+  async (req, res) => {
     const errors = validationResult(req);
     if (!errors.isEmpty()) {
       return res.status(400).render("add", {
@@ -36,8 +34,31 @@ const addGame = [
         params: req.params,
       });
     }
+
+    if (req.params.genre_name === "all") {
+      await db.addNewGame(
+        req.body.title,
+        req.body.genre,
+        req.body.developer,
+        req.body.date
+      );
+    } else {
+      await db.addNewGame(
+        req.body.title,
+        req.params.genre_name,
+        req.body.developer,
+        req.body.date
+      );
+    }
     res.redirect(`/genres/${req.params.genre_name}`);
   },
 ];
 
-module.exports = { getGames, getGenres, addGame };
+async function deleteGame(req, res) {
+  const gameName = req.params.game_name;
+  await db.deleteGameByName(gameName);
+  res.status(200);
+  res.end();
+}
+
+module.exports = { getGames, getGenres, addGame, deleteGame };

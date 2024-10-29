@@ -45,10 +45,8 @@ async function addNewGame(gameName, genreName, developerName, releaseDate) {
 
   const genreId = genreResult.rows[0].genre_id;
 
-  const developerResult = await pool.query(
-    `INSERT INTO developers (developer_name) VALUES ($1)
-     ON CONFLICT (developer_name) DO NOTHING
-     RETURNING developer_id`,
+  let developerResult = await pool.query(
+    `SELECT developer_id FROM developers WHERE developer_name = $1`,
     [developerName]
   );
 
@@ -56,11 +54,12 @@ async function addNewGame(gameName, genreName, developerName, releaseDate) {
   if (developerResult.rows.length > 0) {
     developerId = developerResult.rows[0].developer_id;
   } else {
-    const existingDeveloper = await pool.query(
-      `SELECT developer_id FROM developers WHERE developer_name = $1`,
+    developerResult = await pool.query(
+      `INSERT INTO developers (developer_name) VALUES ($1)
+       RETURNING developer_id`,
       [developerName]
     );
-    developerId = existingDeveloper.rows[0].developer_id;
+    developerId = developerResult.rows[0].developer_id;
   }
 
   const { rows } = await pool.query(
@@ -73,10 +72,15 @@ async function addNewGame(gameName, genreName, developerName, releaseDate) {
   return rows[0].game_id;
 }
 
+async function deleteGameByName(gameName) {
+  await pool.query("DELETE FROM games WHERE game_name = $1", [gameName]);
+}
+
 module.exports = {
   getAllGenres,
   getGenreByName,
   getGamesByGenre,
   getAllGames,
   addNewGame,
+  deleteGameByName,
 };

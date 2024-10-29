@@ -28,9 +28,11 @@
         <h3><%= element.genre_name %></h3>
         <h3><%= element.release_date.toLocaleDateString() %></h3>
         <div class="btns">
-          <a href="/genres/<%= params.genre_name %>"
-            ><img src="/delete.svg" alt="Delete"
-          /></a>
+          <button
+            onclick="deleteGame('<%= element.game_name %>', '<%= element.genre_name %>')"
+          >
+            <img src="/delete.svg" alt="Delete" />
+          </button>
           <a href="/genres/<%= params.genre_name %>/edit"
             ><img src="/pencil.svg" alt="Edit"
           /></a>
@@ -39,4 +41,5 @@
       <% }) %>
     </div>
   </body>
+  <script src="/games.js"></script>
 </html>
