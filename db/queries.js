@@ -15,7 +15,7 @@ async function getGenreByName(genreName) {
 
 async function getGamesByGenre(genreId) {
   const { rows } = await pool.query(
-    `SELECT game_name, release_date, developer_name, genre_name
+    `SELECT game_name, game_id, release_date, developer_name, genre_name
     FROM games 
     JOIN developers 
     ON games.developer_id = developers.developer_id 
@@ -28,7 +28,7 @@ async function getGamesByGenre(genreId) {
 
 async function getAllGames() {
   const { rows } = await pool.query(
-    `SELECT game_name, release_date, developer_name, genre_name
+    `SELECT game_name, game_id, release_date, developer_name, genre_name
     FROM games 
     JOIN developers 
     ON games.developer_id = developers.developer_id 
@@ -72,8 +72,53 @@ async function addNewGame(gameName, genreName, developerName, releaseDate) {
   return rows[0].game_id;
 }
 
+async function getGameById(gameId) {
+  const { rows } = await pool.query(
+    `SELECT 
+        games.game_name,
+        genres.genre_name,
+        developers.developer_name,
+        games.release_date
+    FROM 
+        games
+    JOIN 
+        genres ON games.genre_id = genres.genre_id
+    JOIN 
+        developers ON games.developer_id = developers.developer_id
+    WHERE 
+        games.game_id = $1;`,
+    [gameId]
+  );
+  return rows[0];
+}
+
 async function deleteGameByName(gameName) {
   await pool.query("DELETE FROM games WHERE game_name = $1", [gameName]);
+}
+
+async function editGameByName(currentGameName, updatedDetails) {
+  const { newGameName, genreName, developerName, releaseDate } = updatedDetails;
+  const values = [
+    newGameName,
+    genreName,
+    developerName,
+    releaseDate,
+    currentGameName,
+  ];
+
+  const { rows } = await pool.query(
+    `UPDATE games
+    SET 
+        game_name = $1,
+        genre_id = (SELECT genre_id FROM genres WHERE genre_name = $2),
+        developer_id = (SELECT developer_id FROM developers WHERE developer_name = $3),
+        release_date = $4
+    WHERE game_name = $5
+    RETURNING *;
+  `,
+    values
+  );
+  return rows[0];
 }
 
 module.exports = {
@@ -83,4 +128,6 @@ module.exports = {
   getAllGames,
   addNewGame,
   deleteGameByName,
+  editGameByName,
+  getGameById,
 };

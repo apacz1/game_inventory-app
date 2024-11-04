@@ -61,4 +61,20 @@ async function deleteGame(req, res) {
   res.end();
 }
 
-module.exports = { getGames, getGenres, addGame, deleteGame };
+async function getGameAndGenres(req, res) {
+  const gameId = req.query.id;
+  const genres = await db.getAllGenres();
+  const game = await db.getGameById(gameId);
+  game.release_date = convertDate(game.release_date);
+  res.render("edit", { game: game, params: req.params, genres: genres });
+}
+
+function convertDate(yourDate) {
+  const offset = yourDate.getTimezoneOffset();
+  yourDate = new Date(yourDate.getTime() - offset * 60 * 1000);
+  return yourDate.toISOString().split("T")[0];
+}
+
+async function editGame(req, res) {}
+
+module.exports = { getGames, getGenres, addGame, deleteGame, getGameAndGenres };
