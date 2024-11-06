@@ -35,21 +35,24 @@ const addGame = [
       });
     }
 
-    if (req.params.genre_name === "all") {
-      await db.addNewGame(
-        req.body.title,
-        req.body.genre,
-        req.body.developer,
-        req.body.date
-      );
-    } else {
-      await db.addNewGame(
-        req.body.title,
-        req.params.genre_name,
-        req.body.developer,
-        req.body.date
-      );
+    const genreName =
+      req.params.genre_name === "all" ? req.body.genre : req.params.genre_name;
+
+    const gameId = await db.addNewGame(
+      req.body.title,
+      genreName,
+      req.body.developer,
+      req.body.date
+    );
+
+    if (!gameId) {
+      errorArray.push({ msg: "This game already exists in the database." });
+      return res.status(400).render("add", {
+        errors: errorArray,
+        params: req.params,
+      });
     }
+
     res.redirect(`/genres/${req.params.genre_name}`);
   },
 ];
@@ -66,7 +69,12 @@ async function getGameAndGenres(req, res) {
   const genres = await db.getAllGenres();
   const game = await db.getGameById(gameId);
   game.release_date = convertDate(game.release_date);
-  res.render("edit", { game: game, params: req.params, genres: genres });
+  res.render("edit", {
+    game: game,
+    params: req.params,
+    genres: genres,
+    query: req.query,
+  });
 }
 
 function convertDate(yourDate) {
@@ -75,6 +83,36 @@ function convertDate(yourDate) {
   return yourDate.toISOString().split("T")[0];
 }
 
-async function editGame(req, res) {}
+const editGame = [
+  validateGame,
+  async (req, res) => {
+    const errors = validationResult(req);
+    if (!errors.isEmpty()) {
+      return res.status(400).render("edit", {
+        errors: errors.array(),
+        params: req.params,
+        query: req.query,
+      });
+    }
+    console.log(req.body);
+    console.log(req.query);
+    const updatedGame = {
+      newGameName: req.body.title,
+      genreName: req.body.genre,
+      developerName: req.body.developer,
+      releaseDate: req.body.date,
+    };
+    await db.editGameById(req.query.id, updatedGame);
 
-module.exports = { getGames, getGenres, addGame, deleteGame, getGameAndGenres };
+    res.redirect(`/genres/${req.params.genre_name}`);
+  },
+];
+
+module.exports = {
+  getGames,
+  getGenres,
+  addGame,
+  deleteGame,
+  getGameAndGenres,
+  editGame,
+};
