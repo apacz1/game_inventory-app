@@ -44,7 +44,7 @@ async function addNewGame(gameName, genreName, developerName, releaseDate) {
   );
 
   if (existingGameResult.rows.length > 0) {
-    return existingGameResult.rows[0].game_id;
+    return null;
   }
 
   const genreResult = await pool.query(
@@ -112,6 +112,15 @@ async function deleteGameByName(gameName) {
 
 async function editGameById(currentGameId, updatedDetails) {
   const { newGameName, genreName, developerName, releaseDate } = updatedDetails;
+
+  const existingGameCheck = await pool.query(
+    `SELECT game_id FROM games WHERE game_name = $1 AND release_date = $2 AND game_id != $3`,
+    [newGameName, releaseDate, currentGameId]
+  );
+
+  if (existingGameCheck.rows.length > 0) {
+    return null;
+  }
 
   const currentDeveloperResult = await pool.query(
     `SELECT developer_id FROM games WHERE game_id = $1`,

@@ -44,7 +44,7 @@ const addGame = [
       req.body.developer,
       req.body.date
     );
-
+    const errorArray = [];
     if (!gameId) {
       errorArray.push({ msg: "This game already exists in the database." });
       return res.status(400).render("add", {
@@ -102,7 +102,14 @@ const editGame = [
       developerName: req.body.developer,
       releaseDate: req.body.date,
     };
-    await db.editGameById(req.query.id, updatedGame);
+    const result = await db.editGameById(req.query.id, updatedGame);
+    if (!result) {
+      return res.status(400).render("edit", {
+        errors: [{ msg: "This game already exists in the database." }],
+        params: req.params,
+        query: req.query,
+      });
+    }
 
     res.redirect(`/genres/${req.params.genre_name}`);
   },
