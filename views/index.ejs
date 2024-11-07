@@ -13,7 +13,9 @@
       <a href="/genres/<%= element.genre_name.toLowerCase() %>">
         <div
           class="genre-container"
-          style="background-image: url('<%= element.genre_name %>.jpg')"
+          style="
+            background-image: url('<%= element.genre_name.toLowerCase() %>.jpg');
+          "
         >
           <h2><%= element.genre_name %></h2>
         </div></a

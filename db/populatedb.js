@@ -68,6 +68,7 @@ async function main() {
     connectionString: process.argv[2],
   });
   try {
+    console.log(process.argv[2]);
     await client.connect();
     await client.query(SQL);
   } catch (error) {
